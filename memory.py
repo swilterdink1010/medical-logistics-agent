@@ -1,6 +1,6 @@
 import json
 import os
-#Use this for data persistence
+#Use this for data persistence this is what Randall had done
 FILE = "memory.json"
 
 def load_memory():
