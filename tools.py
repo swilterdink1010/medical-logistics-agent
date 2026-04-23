@@ -5,7 +5,7 @@ import re
 
 INVENTORY_FILE = "inventory.json"
 
-#First two were a template for me basically, courtesy of Randall, it helped out for me to write the rest
+
 def calculate_shipping_cost(distance_km, weight_kg):
     base_rate = 0.5
     weight_factor = 0.2
