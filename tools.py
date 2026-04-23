@@ -2,7 +2,7 @@ import json
 import os
 import re
 
-
+#Tool implementations for the medical logistics agent
 INVENTORY_FILE = "inventory.json"
 
 #First two were a template for me basically, courtesy of Randall, it helped out for me to write the rest
@@ -16,7 +16,7 @@ def parse_shipping_input(input_str):
     distance, weight = map(float, input_str.split(","))
     return calculate_shipping_cost(distance, weight)
 
-
+#Everything below is what I was able to set up using above code as a template
 def _load_inventory():
     if not os.path.exists(INVENTORY_FILE):
         seed_inventory()
