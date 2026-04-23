@@ -1,0 +1,4 @@
+Medical shipments must remain between 2C and 8C.
+Emergency deliveries must be completed within 2 hours.
+Hazardous materials require certified handling and labeling.
+Hospitals prioritize life-saving equipment shipments over routine supplies.
