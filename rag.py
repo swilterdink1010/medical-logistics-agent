@@ -1,9 +1,9 @@
 import os
-
+#took some set up
 from langchain_community.vectorstores import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
-
+#Implement RAG System
 DB_DIR = "db"
 DOCS_FILE = "data/medical_docs.txt"
 
