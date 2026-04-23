@@ -2,7 +2,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import initialize_agent, Tool
 from rag import load_vector_db
 from tools import parse_shipping_input, inventory_lookup, keep_inventory, parse_model_output
-
+#This is the Implement GenAI connection and parsing
 def get_agent():
     llm = ChatGoogleGenerativeAI(model="gemini-pro")
 
