@@ -7,7 +7,7 @@ Tests the functions of tools.py and prints whether each test passes or fails.
 import os
 import sys
 sys.path.insert(0, '..')
-from tools import calculate_shipping_cost, parse_shipping_input, inventory_lookup, keep_inventory, parse_model_output, seed_inventory
+from src.tools import calculate_shipping_cost, parse_shipping_input, inventory_lookup, keep_inventory, parse_model_output, seed_inventory
 
 INVENTORY_FILE = "./inventory.json"
 
