@@ -1,3 +1,4 @@
+import os
 from typing import List
 
 from dotenv import load_dotenv
@@ -11,6 +12,7 @@ from rag import create_rag_chain
 
 
 load_dotenv()
+GOOGLE_MODEL_ID = os.getenv("GOOGLE_MODEL_ID")
 
 
 def find_tool_by_name(tools: List[BaseTool], tool_name: str) -> BaseTool:
@@ -29,12 +31,12 @@ def get_shipping_cost(distance_km: float, weight_kg: float)->float:
     return cost
 
 
-@tool("get_inventory_lookup", description="Returns a string of info regarding the item's stock based upon the input string 'Item, Number Requested'")
-def get_inventory_lookup(item_str: str)->str:
+@tool("get_inventory_lookup", description="Returns a string of info that details whether a request can be fulfilled given an item name and number of items required")
+def get_inventory_lookup(item: str, num_required: int)->str:
     """
-    Returns a string of info regarding the item's stock based upon the input string 'Item, Number Requested'
+    Returns a string of info that details whether a request can be fulfilled given an item name and number of items required
     """
-    lookup_res = inventory_lookup(item_str)
+    lookup_res = inventory_lookup(item, num_required)
     return lookup_res
     
     
@@ -49,7 +51,7 @@ def get_rag_info(question: str)->str:
 tools = [get_shipping_cost, get_inventory_lookup, get_rag_info]
 
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
+    model=GOOGLE_MODEL_ID,
     callbacks=[AgentCallbackHandler()]
 )
 
