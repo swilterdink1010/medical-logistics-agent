@@ -1,5 +1,5 @@
 """
-tools_tester.py
+agent_tester.py
 ------------------------------------------------------------------------------
 Code written with assistance from Claude Sonnet 4.6
 Run all tests in parallel (avoids real LLM calls / rate limits via mocking):
@@ -220,3 +220,132 @@ class TestAgentLoop:
         result = self._run_loop(llm, all_tools)
         assert result.content == "Order is feasible and shipping cost calculated."
         assert llm.invoke.call_count == 3
+        
+# ---------------------------------------------------------------------------
+# Load / stress tests — multiple concurrent tool requests
+# ---------------------------------------------------------------------------
+
+import threading
+import time
+
+class TestToolLoadConcurrency:
+    """Simulate concurrent tool invocations to surface race conditions
+    or shared-state bugs (e.g. inventory file contention)."""
+
+    @patch("agent.calculate_shipping_cost", side_effect=lambda d, w: round(d * 0.5 + w * 0.2, 2))
+    def test_shipping_tool_concurrent_requests(self, mock_calc):
+        """Fire 50 simultaneous shipping cost requests across threads."""
+        from agent import get_shipping_cost
+
+        NUM_THREADS = 50
+        results = []
+        errors = []
+        lock = threading.Lock()
+
+        def call_tool(i):
+            try:
+                result = get_shipping_cost.invoke({
+                    "distance_km": float(i * 10),
+                    "weight_kg": float(i)
+                })
+                with lock:
+                    results.append(result)
+            except Exception as e:
+                with lock:
+                    errors.append(e)
+
+        threads = [threading.Thread(target=call_tool, args=(i,)) for i in range(1, NUM_THREADS + 1)]
+        start = time.time()
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        elapsed = time.time() - start
+
+        assert len(errors) == 0, f"Errors during concurrent calls: {errors}"
+        assert len(results) == NUM_THREADS
+        assert elapsed < 5.0, f"Concurrent calls took too long: {elapsed:.2f}s"
+
+    @patch("agent.inventory_lookup", side_effect=lambda item, qty: f"Status: FULFILLABLE for {item}")
+    def test_inventory_tool_concurrent_requests(self, mock_lookup):
+        """Fire 50 simultaneous inventory lookups for different items."""
+        from agent import get_inventory_lookup
+
+        NUM_THREADS = 50
+        items = [f"item_{i}" for i in range(NUM_THREADS)]
+        results = {}
+        errors = []
+        lock = threading.Lock()
+
+        def call_tool(item):
+            try:
+                result = get_inventory_lookup.invoke({"item": item, "num_required": 10})
+                with lock:
+                    results[item] = result
+            except Exception as e:
+                with lock:
+                    errors.append(e)
+
+        threads = [threading.Thread(target=call_tool, args=(item,)) for item in items]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        assert len(errors) == 0, f"Errors: {errors}"
+        assert len(results) == NUM_THREADS
+        # Each result should correspond to the correct item (no cross-contamination)
+        for item, result in results.items():
+            assert item in result, f"Result for {item} doesn't contain item name: {result}"
+
+    def test_agent_loop_concurrent_sessions(self, all_tools):
+        """Simulate 20 independent agent sessions running simultaneously,
+        each making a tool call and receiving a final answer."""
+        from agent import find_tool_by_name
+
+        NUM_SESSIONS = 20
+        outcomes = []
+        errors = []
+        lock = threading.Lock()
+
+        def run_session(session_id):
+            try:
+                llm = MagicMock()
+                llm.invoke.side_effect = [
+                    make_tool_call_message(
+                        "get_shipping_cost",
+                        {"distance_km": float(session_id * 5), "weight_kg": 2.0},
+                        f"call_{session_id}"
+                    ),
+                    make_final_message(f"Session {session_id} complete."),
+                ]
+
+                messages = [HumanMessage(content=f"Session {session_id} query")]
+                while True:
+                    ai_message = llm.invoke(messages)
+                    tool_calls = getattr(ai_message, "tool_calls", None) or []
+                    if tool_calls:
+                        messages.append(ai_message)
+                        for tc in tool_calls:
+                            t = find_tool_by_name(all_tools, tc["name"])
+                            obs = t.invoke(tc["args"])
+                            messages.append(ToolMessage(content=str(obs), tool_call_id=tc["id"])) # type: ignore
+                        continue
+                    with lock:
+                        outcomes.append(ai_message.content)
+                    return
+
+            except Exception as e:
+                with lock:
+                    errors.append((session_id, e))
+
+        threads = [threading.Thread(target=run_session, args=(i,)) for i in range(NUM_SESSIONS)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        assert len(errors) == 0, f"Session errors: {errors}"
+        assert len(outcomes) == NUM_SESSIONS
+        for i, outcome in enumerate(outcomes):
+            assert "complete" in outcome or "Session" in outcome
