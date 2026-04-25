@@ -12,7 +12,7 @@ load_dotenv()
 
 
 def load_and_split()->list:
-    loader = TextLoader("data/medical_docs.txt")
+    loader = TextLoader(os.path.join(os.path.dirname(__file__), "data", "medical_docs.txt"))
     documents = loader.load()
     
     splitter = RecursiveCharacterTextSplitter(
@@ -32,7 +32,7 @@ def ingest_chroma_db():
     vectorstore = Chroma.from_documents(
         documents=chunks,
         embedding=embeddings,
-        persist_directory="./data/vectorstore"
+        persist_directory="src/data/vectorstore"
     )
     
     
@@ -41,7 +41,7 @@ def load_vectorstore():
     embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
     vectorstore = Chroma(
         embedding_function=embeddings,
-        persist_directory="./data/vectorstore",
+        persist_directory="src/data/vectorstore",
     )
     return vectorstore
 
@@ -50,6 +50,7 @@ prompt_template = ChatPromptTemplate.from_template(
 """
 You are a knowledgeable assistant. Answer the question using ONLY the
 context provided below. If the answer is not in the context, say so clearly.
+You are not to authorize shipments or deal with money, but you can advise next steps.
 
 Context:
 {context}
@@ -75,7 +76,7 @@ def create_rag_chain(llm):
     
     
 def ifndef_ingest():
-    if not os.path.exists("./data/vectorstore/"):
+    if not os.path.exists("src/data/vectorstore/"):
         ingest_chroma_db()
     
     

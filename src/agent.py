@@ -56,14 +56,11 @@ llm = ChatGoogleGenerativeAI(
 )
 
 llm_with_tools = llm.bind_tools(tools)
-
-user_input = input("Enter input: ")
-messages: List[BaseMessage] = [HumanMessage(content=user_input)]
-
 rag_chain = create_rag_chain(llm_with_tools)
 
-
 if __name__ == "__main__":
+    user_input = input("Enter input: ")
+    messages: List[BaseMessage] = [HumanMessage(content=user_input)]
     
     while True:
         ai_message = llm_with_tools.invoke(messages)
