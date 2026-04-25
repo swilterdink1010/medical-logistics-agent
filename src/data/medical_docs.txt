@@ -1,4 +1,39 @@
-Medical shipments must remain between 2C and 8C.
-Emergency deliveries must be completed within 2 hours.
-Hazardous materials require certified handling and labeling.
-Hospitals prioritize life-saving equipment shipments over routine supplies.
+--- MEDICAL LOGISTICS POLICY DOCUMENT ---
+
+Temperature Control:
+All temperature-sensitive medical shipments must be maintained between 2°C and 8°C unless otherwise specified. Vaccines and biologics must be stored in validated cold chain containers with continuous temperature monitoring devices. Any deviation beyond this range must be reported immediately and the shipment quarantined for inspection.
+
+Emergency Delivery Protocol:
+Emergency medical deliveries must be completed within 2 hours of request. Priority routing should be used, and all non-critical deliveries should be delayed if necessary to accommodate emergency shipments. Real-time tracking must be enabled for all emergency transport vehicles.
+
+Hazardous Materials Handling:
+Hazardous medical materials, including biohazard waste and infectious substances, must be labeled according to OSHA and CDC standards. Personnel handling these materials must be certified and equipped with appropriate personal protective equipment (PPE). Transport containers must be leak-proof and puncture-resistant.
+
+Inventory Management:
+All medical inventory must be tracked in real-time using the centralized inventory system. Stock levels must be updated immediately after any transaction. Critical items such as antibiotics, IV fluids, and surgical supplies must maintain a minimum threshold stock level at all times.
+
+Cold Chain Compliance:
+Cold chain shipments must include insulated packaging, gel packs or dry ice, and digital temperature loggers. Upon arrival, receiving staff must verify temperature logs before accepting the shipment. Any discrepancies must be documented and escalated.
+
+Medication Prioritization:
+Hospitals must prioritize life-saving medications and equipment over routine supplies. During shortages, allocation should follow triage protocols based on urgency and patient impact.
+
+Transport Security:
+All shipments must be sealed and logged before transport. High-value or controlled substances require dual verification and secure transport with authorized personnel only. Unauthorized access or tampering must be reported immediately.
+
+Delivery Documentation:
+Each shipment must include a digital and physical manifest detailing contents, quantities, origin, destination, and handling requirements. Proof of delivery must include timestamp, recipient signature, and condition verification.
+
+Supply Chain Disruption Response:
+In the event of supply chain disruptions, alternative suppliers must be contacted immediately. Emergency stock reserves should be utilized, and logistics teams must coordinate with hospital administrators to prioritize distribution.
+
+Sanitation and Sterility:
+All reusable transport containers must be sanitized after each use. Sterile items must be handled in contamination-free environments and sealed properly to maintain sterility during transport.
+
+Vehicle Requirements:
+All transport vehicles must be regularly inspected and equipped with temperature control systems when necessary. Vehicles used for hazardous materials must comply with federal transport regulations.
+
+Return and Disposal Procedures:
+Expired or damaged medical supplies must be returned to designated facilities for proper disposal. Biohazard materials must follow regulated disposal protocols and must never be mixed with standard waste.
+
+--- END OF DOCUMENT ---
