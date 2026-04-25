@@ -37,3 +37,12 @@ Return and Disposal Procedures:
 Expired or damaged medical supplies must be returned to designated facilities for proper disposal. Biohazard materials must follow regulated disposal protocols and must never be mixed with standard waste.
 
 --- END OF DOCUMENT ---
+
+For inventory retrieval, see the table below for common values:
+
+Inventory ID        Common Names (Comma separated)                  Weight per item (kg)
+ibuprofen_200mg     Ibuprofen, Advil, Motrin, Nuprin                0.0002
+amoxicillin_500mg   Amoxicillin, Amoxil, Trimox, Moxatag            0.0005
+saline_bag_1l       Saline, Normal Saline, NS, Simply Saline        1.05
+syringe_10ml        Syringe, 10mL Syringe                           0.015
+n95_mask            N95, N95 Respirator, N95 Filtering Facepiece    0.03

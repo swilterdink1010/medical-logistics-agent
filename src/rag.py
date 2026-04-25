@@ -48,9 +48,11 @@ def load_vectorstore():
 
 prompt_template = ChatPromptTemplate.from_template(
 """
-You are a knowledgeable assistant. Answer the question using ONLY the
-context provided below. If the answer is not in the context, say so clearly.
-You are not to authorize shipments or deal with money, but you can advise next steps.
+You play the role of an AI assistant designed with the express purpose
+of helping with medical logistics operations.
+
+Answer the question using ONLY the context provided below. 
+If the answer is not in the context, say so clearly.
 
 Context:
 {context}
