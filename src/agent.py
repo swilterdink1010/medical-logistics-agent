@@ -31,7 +31,7 @@ def get_shipping_cost(distance_km: float, weight_kg: float)->float:
     return cost
 
 
-@tool("get_inventory_lookup", description="Returns a string of info that details whether a request can be fulfilled given an item name and number of items required")
+@tool("get_inventory_lookup", description="Returns a string of info that details whether a request can be fulfilled given an item ID and number of items required")
 def get_inventory_lookup(item: str, num_required: int)->str:
     """
     Returns a string of info that details whether a request can be fulfilled given an item name and number of items required
@@ -40,7 +40,7 @@ def get_inventory_lookup(item: str, num_required: int)->str:
     return lookup_res
     
     
-@tool("get_rag_info", description="Search the medical logistics knowledge docs to answer questions and to seek item names")
+@tool("get_rag_info", description="Search the medical logistics knowledge docs to answer questions. Use this to find or verify the official item names or common aliases BEFORE attempting to use get_inventory_lookup.")
 def get_rag_info(question: str)->str:
     """
     Search the medical logistics knowledge docs to answer questions and to seek item names
