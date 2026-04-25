@@ -35,7 +35,8 @@ def run_agent(user_input: str):
                     ToolMessage(content=str(observation), tool_call_id=tool_call_id) # type: ignore
                 )
             continue
-
+        
+        st.session_state.messages.append(ai_message)
         return ai_message.content
 
 
