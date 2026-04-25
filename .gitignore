@@ -2,3 +2,4 @@
 __pycache__
 src/data/vectorstore
 src/data/inventory.json
+testing/.pytest_cache
